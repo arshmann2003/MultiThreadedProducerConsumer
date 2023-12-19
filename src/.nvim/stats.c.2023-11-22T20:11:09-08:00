@@ -1,0 +1,37 @@
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int *factoryProductions;
+int *eaten;
+int factories;
+
+void stats_init(int num_producers) {
+  factoryProductions = (int *)malloc(sizeof(int) * num_producers);
+  eaten = (int *)malloc(sizeof(int) * num_producers);
+  for (int i = 0; i < num_producers; i++) {
+    factoryProductions[i] = 0;
+    eaten[i] = 0;
+  }
+  factories = num_producers;
+}
+
+void stats_cleanup() {}
+
+void stats_record_produced(int factory_number) {
+  factoryProductions[factory_number] += 1;
+}
+
+void stats_record_consumed(int factory_number, double delay_in_ms) {
+  eaten[factory_number] += 1;
+}
+
+void stats_display() {
+  printf("FACTORY#\t#MADE\t#EATEN\n");
+//  printf("%8s%10s%10s%20s%20s%20s\n", "Factory#", "#Made", "#Eaten",
+ //        "Min Delay[ms]", "Avg Delay[ms]", "Max Delay[ms]");
+  for (int i = 0; i < factories; i++) {
+    printf("%8d%10d%10d%20.5f%20.5f%20f\n", i, factoryProductions[i], eaten[i],
+           0, 0, 0);
+  }
+}

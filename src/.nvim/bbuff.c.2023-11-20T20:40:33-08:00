@@ -1,0 +1,21 @@
+#include "../include/bbuff.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INTITIALIZER;
+void *buffer[BUFFER_SIZE];
+
+void bbuff_init() {};
+
+void bbuff_blocking_insert(void *item) {}
+
+void *bbuff_blocking_extract() {
+  void *msg = "success";
+  return msg;
+}
+
+_Bool bbuff_is_empty() { return true; }

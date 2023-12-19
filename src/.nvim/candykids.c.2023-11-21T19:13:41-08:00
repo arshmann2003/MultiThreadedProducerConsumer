@@ -1,0 +1,64 @@
+#include "../include/bbuff.h"
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#define SIZE 10
+
+typedef struct {
+  int factory_number;
+  double creation_ts_ms;
+} candy_t;
+
+void displayMsg(char *str);
+void *createCandies();
+void *eatCandies();
+
+int main(int argc, char *argv[]) {
+  int numOfFactories = 0;
+  int numOfKids = 0;
+  int numOfSeconds = 0;
+  char *endptr;
+  if (argc == 4) {
+    numOfFactories = strtol(argv[1], &endptr, 10);
+    numOfKids = strtol(argv[2], &endptr, 10);
+    numOfSeconds = strtol(argv[3], &endptr, 10);
+  }
+  if (numOfFactories < 0 || numOfKids < 0 || numOfSeconds < 0) {
+    displayMsg("INVALID ARGUMENT");
+    exit(1);
+  }
+  bbuff_init(); // 2. initialization
+  // launch factory threads create candies
+  static pthread_t *factories;
+  factories = malloc(sizeof(pthread_t) * numOfFactories);
+  for (int i = 0; i < numOfFactories; i++) {
+    pthread_create(&factories[i], NULL, createCandies, NULL);
+  }
+  // launch kids threads
+  static pthread_t *kidThreads;
+  kidThreads = malloc(sizeof(pthread_t) * numOfKids);
+  for (int i = 0; i < numOfKids; i++) {
+    pthread_create(&kidThreads[i], NULL, eatCandies, NULL);
+    return 0;
+  }
+}
+void *createCandies() {
+  // ADD FACTORIES ADD TO BUFFER
+  candy_t *candy = malloc(sizeof(candy_t));
+  candy->factory_number = 1;
+  
+  bbuff_blocking_insert(candy); 
+  return NULL;
+}
+
+void *eatCandies() {
+  // GET CANDIES REMOVE FROM BUFFER
+  return NULL;
+}
+
+void displayMsg(char *str) {
+  write(STDOUT_FILENO, str, strlen(str) * sizeof(char));
+}

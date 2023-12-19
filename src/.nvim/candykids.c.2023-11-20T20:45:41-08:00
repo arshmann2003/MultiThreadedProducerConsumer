@@ -1,0 +1,38 @@
+#include "../include/bbuff.h"
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#define SIZE 10
+
+typedef struct {
+  int factory_number;
+  double creation_ts_ms;
+} candy_t;
+
+void displayMsg(char *str);
+
+int main(int argc, char *argv[]) {
+  int numOfFactories = 0;
+  int numOfKids = 0;
+  int numOfSeconds = 0;
+  char *endptr;
+  if (argc == 4) {
+    numOfFactories = strtol(argv[1], &endptr, 10);
+    numOfKids = strtol(argv[2], &endptr, 10);
+    numOfSeconds = strtol(argv[3], &endptr, 10);
+  }
+  bbuff_init(); // 2 initialization
+  // launch factory threads
+  static void* factories = malloc(numOfFactories * sizeof(pthread_t));
+  for (int i = 0; i < numOfFactories; i++) {
+  }
+
+  return 0;
+}
+
+void displayMsg(char *str) {
+  write(STDOUT_FILENO, str, strlen(str) * sizeof(char));
+}

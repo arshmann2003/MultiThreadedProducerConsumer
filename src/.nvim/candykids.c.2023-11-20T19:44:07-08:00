@@ -1,0 +1,31 @@
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define SIZE 10
+
+typedef struct {
+  int factory_number;
+  double creation_ts_ms;
+} candy_t;
+
+
+
+int main(int argc, char *argv[]) {
+  int numOfFactories = 0;
+  int numOfKids = 0;
+  int numOfSeconds = 0;
+  char *endptr;
+  if (argc == 4) {
+    numOfFactors = strtol(argv[1], &endptr, 10); 
+    numOfKids = strtol(argv[2], &numOfKids, 10);
+    numOfSeconds = strtol(argv[3], &numOfSeconds, 10);
+  }
+  printf("%d %d %d\n", numOfFactories, numOfKids, numOfSeconds);
+  return 0;
+}
+
+
+

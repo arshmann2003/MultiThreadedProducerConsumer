@@ -1,0 +1,1 @@
+/usr/bin/clang CMakeFiles/candykids.dir/src/bbuff.c.o CMakeFiles/candykids.dir/src/candykids.c.o CMakeFiles/candykids.dir/src/stats.c.o -o candykids  -lrt 

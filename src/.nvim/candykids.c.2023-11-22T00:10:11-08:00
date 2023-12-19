@@ -1,0 +1,76 @@
+#include "../include/bbuff.h"
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#define SIZE 10
+
+typedef struct {
+  int factory_number;
+  double creation_ts_ms;
+} candy_t;
+
+void displayMsg(char *str);
+void *createCandies();
+void *eatCandies();
+
+pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
+int producerSignal = 0;
+
+int main(int argc, char *argv[]) {
+  int numOfFactories = 0;
+  int numOfKids = 0;
+  int numOfSeconds = 0;
+  char *endptr;
+  if (argc == 4) {
+    numOfFactories = strtol(argv[1], &endptr, 10);
+    numOfKids = strtol(argv[2], &endptr, 10);
+    numOfSeconds = strtol(argv[3], &endptr, 10);
+  }
+  if (numOfFactories < 0 || numOfKids < 0 || numOfSeconds < 0) {
+    exit(1);
+  }
+  bbuff_init(); // 2. initialization
+
+  // 3. launch factory threads create candies, launch kid threads
+  static pthread_t *factories;
+  factories = (pthread_t *)malloc(sizeof(pthread_t) * numOfFactories);
+  for (int i = 0; i < numOfFactories; i++) {
+    int *id = (int *)malloc(sizeof(int));
+    *id = i;
+    pthread_create(&factories[i], NULL, createCandies, (void *)id);
+  }
+  // static pthread_t *kidThreads;
+  // kidThreads = malloc(sizeof(pthread_t) * numOfKids);
+  // for (int i = 0; i < numOfKids; i++) {
+  //   pthread_create(&kidThreads[i], NULL, eatCandies, NULL);
+  // }
+
+  // STOP FACTORY THREADS AND JOIN
+  producerSignal = 1;
+  for (int i = 0; i < numOfFactories; i++) {
+    pthread_join(factories[i], NULL);
+  }
+  // 7. WAIT FOR NO MORE CANDIES
+  return 0;
+}
+
+void *createCandies(void *arg) {
+  // ADD FACTORIES ADD TO BUFFER
+    candy_t *candy = (candy_t *)malloc(sizeof(candy_t));
+    candy->factory_number = *(int *)arg;
+    printf("CREATED CANDY: %d", candy->factory_number);
+    bbuff_blocking_insert(candy);
+  return NULL;
+}
+
+void *eatCandies() {
+  //  while (1) {
+  // candy_t *candy = (candy_t *)bbuff_blocking_extract();
+  // free(candy);
+  // sleep(rand() % 2);
+  // }
+  return NULL;
+}

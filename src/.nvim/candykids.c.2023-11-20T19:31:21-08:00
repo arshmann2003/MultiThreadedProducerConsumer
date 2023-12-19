@@ -1,0 +1,19 @@
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define SIZE 10
+
+typedef struct {
+  int factory_number;
+  double creation_ts_ms;
+} candy_t;
+
+int main(int argc, char *argv[]) {
+  if (argc == 4) {
+  
+  }
+  return 0;
+}

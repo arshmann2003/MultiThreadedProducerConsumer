@@ -1,0 +1,17 @@
+#include "../include/bbuff.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void *buffer;
+
+void bbuff_init(){buffer = malloc(BUFFER_SIZE * sizeof(void));};
+
+void bbuff_blocking_insert(void *item) {}
+
+void *bbuff_blocking_extract() {
+  void *msg = "success";
+  return msg;
+}
+
+_Bool bbuff_is_empty() { return true; }

@@ -1,0 +1,33 @@
+#include "../include/bbuff.h"
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+void *buffer[BUFFER_SIZE];
+int numOfCandies;
+
+void bbuff_init() { numOfCandies = 0; };
+
+void bbuff_blocking_insert(void *item) { // ADD CANDY
+  pthread_mutex_lock(&mutex);
+  candy_t candy = (candy_t*)item;
+  printf("CREATED CANDY: %d", item->factory_num);
+  buffer[numOfCandies] = item;
+  numOfCandies++;
+  pthread_mutex_unlock(&mutex);
+}
+
+void *bbuff_blocking_extract() {
+  pthread_mutex_lock(&mutex);
+  void *candy = buffer[numOfCandies];
+  numOfCandies--;
+  pthread_mutex_unlock(&mutex);
+  return candy;
+}
+
+_Bool bbuff_is_empty() {
+  return numOfCandies==0;
+}

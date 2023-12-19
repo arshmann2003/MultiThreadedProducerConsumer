@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <semaphore.h>
+
+void stats_init() {
+}
+
+void stats_cleanup() {
+}
+
+void stats_record_produce(int factory_number) {
+
+}
+
+void stats_record_consumed(int factory_number, double delay_in_ms) {
+
+}
+
+void stats_display() {
+}
